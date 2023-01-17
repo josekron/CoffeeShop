@@ -8,6 +8,8 @@ The API should support the following entities: Ingredients, Recipes, Orders and 
 
 The required technologies are NodeJs and MongoDB.
 
+Time spent is about 3 hours.
+
 ### Technologies
 
 * Node.js
