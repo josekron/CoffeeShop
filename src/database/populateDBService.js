@@ -38,15 +38,15 @@ module.exports = class PopulateDBService {
     }
 
     async _populateIngredients(db, ingredients) {
-        let insertedIngredients = []
+        const insertedIngredients = []
 
         const collections = await db.listCollections().toArray()
         if (collections.map(x => x.name).includes('ingredients')) {
             await db.collection('ingredients').drop();
         }
 
-        for(let ingredient of ingredients) {
-            let insertedIngredient = await db.collection('ingredients').insertOne(ingredient)
+        for(const ingredient of ingredients) {
+            const insertedIngredient = await db.collection('ingredients').insertOne(ingredient)
             insertedIngredients.push({name: ingredient.name, ingredientID: insertedIngredient.insertedId})
         }
 
@@ -59,11 +59,9 @@ module.exports = class PopulateDBService {
             await db.collection('recipes').drop();
         }
 
-        for(let recipe of recipes) {
-            let recipeIngredients = recipe.ingredients
-            for(let ingredient of recipeIngredients) {
-                let ingredientID = ingredients.filter(x => x.name === ingredient.name)[0].ingredientID
-                ingredient.ingredientID = ingredientID
+        for(const recipe of recipes) {
+            for(const ingredient of recipe.ingredients) {
+                ingredient.ingredientID = ingredients.filter(x => x.name === ingredient.name)[0].ingredientID
             }
             
             await db.collection('recipes').insertOne(recipe)
@@ -76,7 +74,7 @@ module.exports = class PopulateDBService {
             await db.collection('baristas').drop();
         }
 
-        for(let barista of baristas) {
+        for(const barista of baristas) {
             barista.isBusy = false
             await db.collection('baristas').insertOne(barista)
         }

@@ -33,7 +33,7 @@ describe('test orderService', () => {
 
   it('should find a barista', async () => {
     baristaService = new BaristaService(mockDBManager)
-    let barista = await baristaService.getAvailableBarista()
+    const barista = await baristaService.getAvailableBarista()
     expect(barista).not.toBeNull()
     expect(barista.name).not.toBeNull()
     expect(barista.isBusy).toEqual(true)

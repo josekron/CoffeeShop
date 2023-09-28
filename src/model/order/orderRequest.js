@@ -18,7 +18,7 @@ module.exports = class OrderRequest {
      * @returns 
      */
     isValidOrderRequest(availableRecipes) {
-        let validation = {
+        const validation = {
             isValid: true,
             errorDescription: false
         }

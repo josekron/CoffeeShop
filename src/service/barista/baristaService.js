@@ -12,7 +12,7 @@ module.exports = class BaristaService {
         const conn = await this.dbManager.getConnection()
         const db = conn.db()
 
-        let baristas = await db.collection('baristas').find({'isBusy': false}).toArray()
+        const baristas = await db.collection('baristas').find({'isBusy': false}).toArray()
 
         if(!baristas.length) {
             throw new Error('No barista available at this moment')
@@ -30,7 +30,7 @@ module.exports = class BaristaService {
         const db = conn.db()
 
         await db.collection('baristas').updateOne({_id: id}, {$set: {isBusy: false}})
-        let barista = await this._findBaristaByID(id)
+        const barista = await this._findBaristaByID(id)
         return new Barista(barista._id, barista.name, barista.isBusy)
     }
 

@@ -47,7 +47,7 @@ module.exports = class OrderService {
 
 
             // Assign order to barista:
-            let assignedBarista = await this.baristaService.getAvailableBarista()
+            const assignedBarista = await this.baristaService.getAvailableBarista()
             console.log(`Assigning barista ${assignedBarista.name} to order ${order.orderID}`)
 
             order = await this._updateOrderToInProgress(order.orderID, assignedBarista.name)
@@ -82,7 +82,7 @@ module.exports = class OrderService {
             totalTime += availableRecipes.filter((x => x.name))[0].timeSec * orderRecipe.quantity
         }
         
-        let additionalTime = order.orderRecipes.map(x => x.quantity).reduce((o1, o2) => o1 + o2) - 1
+        const additionalTime = order.orderRecipes.map(x => x.quantity).reduce((o1, o2) => o1 + o2) - 1
         totalTime += (additionalTime * 30) //TODO:: 30 should be a constant in the app configuration
 
         this.printerService.printOrder(order, barista, totalTime)
@@ -91,7 +91,7 @@ module.exports = class OrderService {
     }
 
     async _validateOrderRequest(orderRequest, availableRecipes) {
-        let validationOrderRequest = orderRequest.isValidOrderRequest(availableRecipes.map(x => x['name']))
+        const validationOrderRequest = orderRequest.isValidOrderRequest(availableRecipes.map(x => x['name']))
         if(!validationOrderRequest.isValid) {
             throw new Error(validationOrderRequest.errorDescription)
         }
@@ -120,7 +120,7 @@ module.exports = class OrderService {
         orderRequest.statusOrder = statusOrderType.IN_PROCESS
         orderRequest.orderID = generateOrderID(orderRequest.clientName)
 
-        let order = await db.collection('orders').insertOne(orderRequest)
+        const order = await db.collection('orders').insertOne(orderRequest)
         return await this._findOrderByID(order.insertedId)
     }
 

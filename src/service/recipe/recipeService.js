@@ -19,7 +19,7 @@ module.exports = class RecipeService {
         const conn = await this.dbManager.getConnection()
         const db = conn.db()
 
-        let results = await db.collection('recipes').find({}).toArray()
+        const results = await db.collection('recipes').find({}).toArray()
         return results.map(x => new Recipe(x.name, x.ingredients, x.timeSec))
     }
 
@@ -40,7 +40,7 @@ module.exports = class RecipeService {
         }
 
         // return a map <ingredient name, quantity required>
-        let ingredientsMap = this._getIngredientsFromOrder(orderRecipes, availableRecipes)
+        const ingredientsMap = this._getIngredientsFromOrder(orderRecipes, availableRecipes)
         
         for( const [name, quantity] of ingredientsMap) {
             await this._updateIngredientQuantityByName(name, quantity)
@@ -51,12 +51,12 @@ module.exports = class RecipeService {
         const conn = await this.dbManager.getConnection()
         const db = conn.db()
 
-        let results = await db.collection('ingredients').find({}).toArray()
+        const results = await db.collection('ingredients').find({}).toArray()
         return results.map(x => new Ingredient(x.name, x.description, x.quantity, x.measure))
     }
 
     async _updateIngredientQuantityByName(name, quantity) {
-        let ingredient = await this._findIngredientByName(name)
+        const ingredient = await this._findIngredientByName(name)
 
         if(ingredient.quantity < quantity) {
             throw new Error(`ingredient ${name} quantity ${quantity} not enough in shop`)
@@ -78,9 +78,9 @@ module.exports = class RecipeService {
     _getIngredientsFromOrder(orderRecipes, availableRecipes) {
         let ingredientsMap = new Map()
 
-        for(let orderRecipe of orderRecipes){
-            let recipe = availableRecipes.filter(x => x.name == orderRecipe.name)[0]
-            for(let ingredient of recipe.ingredients){
+        for(const orderRecipe of orderRecipes){
+            const recipe = availableRecipes.filter(x => x.name == orderRecipe.name)[0]
+            for(const ingredient of recipe.ingredients){
                 if(!ingredientsMap.has(ingredient.name)){
                     ingredientsMap.set(ingredient.name, (ingredient.quantity * orderRecipe.quantity))
                 }
